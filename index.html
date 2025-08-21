@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Maaf ya, Lintang Citra Buana ❤️</title>
+  <meta name="theme-color" content="#ff8ab5" />
+  <meta name="description" content="Situs kecil penuh cinta untuk minta maaf ke Lintang Citra Buana." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💖</text></svg>">
+  <style>
+    /* Reset ringkas */
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color: #2a1632;
+      background: radial-gradient(1200px 800px at 70% -10%, #ffd1e6, #ffc1dc 30%, #ffa9cf 60%, #ff8ab5 100%);
+      overflow: hidden;
+    }
+
+    /* Frame ala iPhone (375–414 width) */
+    .phone-frame {
+      position: relative;
+      width: min(414px, 100vw);
+      height: 100svh; /* safe viewport on iOS */
+      margin: 0 auto;
+      padding: max(env(safe-area-inset-top), 16px) 16px max(env(safe-area-inset-bottom), 16px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    /* Header chip */
+    .chip {
+      align-self: center;
+      background: rgba(255,255,255,0.65);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      color: #8d2b5a;
+      padding: 10px 14px;
+      border-radius: 999px;
+      box-shadow: 0 6px 18px rgba(141, 43, 90, 0.15);
+      font-weight: 600;
+      letter-spacing: .3px;
+      border: 1px solid rgba(255, 255, 255, 0.55);
+    }
+
+    /* Card utama */
+    .card {
+      position: relative;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 22px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid rgba(255,255,255,0.7);
+      border-radius: 28px;
+      box-shadow: 0 20px 60px rgba(141, 43, 90, 0.18);
+      overflow: hidden;
+    }
+    .card h1 {
+      margin: 0 0 6px;
+      font-size: clamp(22px, 6vw, 30px);
+      line-height: 1.15;
+    }
+    .card h1 .name {
+      display: inline-block;
+      background: linear-gradient(90deg, #ff4fa0, #e12d7b, #b51d62);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .card p {
+      margin: 6px 0 0;
+      font-size: clamp(15px, 4.3vw, 18px);
+      opacity: .9;
+    }
+
+    /* Quote */
+    .quote {
+      margin-top: 14px;
+      font-style: italic;
+      opacity: .85;
+    }
+
+    /* Tombol aksi */
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 20px;
+      width: 100%;
+      max-width: 360px;
+    }
+    .btn {
+      appearance: none;
+      border: none;
+      padding: 14px 18px;
+      font-weight: 700;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: transform .08s ease, box-shadow .2s ease, background .2s ease, opacity .2s;
+      box-shadow: 0 10px 30px rgba(141, 43, 90, 0.15);
+    }
+    .btn:active { transform: translateY(1px) scale(0.99); }
+    .btn-yes {
+      background: linear-gradient(180deg, #ff4fa0, #e12d7b);
+      color: white;
+    }
+    .btn-no {
+      background: rgba(255, 255, 255, 0.75);
+      border: 1px dashed rgba(228, 58, 124, 0.55);
+      color: #902659;
+    }
+
+    /* Footer mini */
+    .foot {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-size: 13px;
+      opacity: .9;
+      color: #6b1f47;
+    }
+
+    /* Hati melayang */
+    .heart {
+      position: absolute;
+      font-size: 16px;
+      opacity: 0;
+      animation: floatUp linear forwards;
+      pointer-events: none;
+      filter: drop-shadow(0 6px 10px rgba(255, 0, 92, 0.25));
+    }
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(0.9) rotate(0deg); opacity: 0; }
+      10% { opacity: .95; }
+      100% { transform: translateY(-120vh) scale(1.6) rotate(12deg); opacity: 0; }
+    }
+
+    /* Modal sukses */
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      background: rgba(255, 224, 236, .55);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .25s ease, visibility .25s ease;
+      z-index: 999;
+    }
+    .modal.active { opacity: 1; visibility: visible; }
+    .modal-card {
+      width: min(380px, 90vw);
+      background: white;
+      border-radius: 22px;
+      padding: 22px;
+      text-align: center;
+      box-shadow: 0 24px 60px rgba(141, 43, 90, 0.18);
+      border: 1px solid #ffe0ee;
+    }
+    .modal-card h2 { margin: 0 0 8px; }
+    .modal-card p { margin: 0 0 16px; }
+    .modal .btn-close {
+      display: inline-block;
+      background: #ff4fa0;
+      color: #fff;
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* Responsif kecil */
+    @media (max-width: 360px) {
+      .actions { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="phone-frame">
+    <div class="chip">Untuk: <strong>Lintang Citra Buana</strong> 💗</div>
+
+    <main class="card" id="card">
+      <h1>
+        Maafin aku ya, <span class="name">Lintang</span> 🌙
+      </h1>
+      <p>Aku sadar aku salah. Aku nggak mau bikin kamu sedih lagi.</p>
+      <p class="quote">“Kalau kamu bintang, izinkan aku jadi langitnya—selalu ada buat kamu.”</p>
+
+      <div class="actions">
+        <button class="btn btn-yes" id="yesBtn">Iya, aku maafin 💖</button>
+        <button class="btn btn-no" id="noBtn" aria-label="Belum">Nanti dulu…</button>
+      </div>
+    </main>
+
+    <footer class="foot">
+      <span>— dari aku yang bucin banget sama kamu —</span>
+      <span aria-hidden="true">✨</span>
+    </footer>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal" id="modal">
+    <div class="modal-card">
+      <h2>Yeayy! Terima kasih sayangku ✨</h2>
+      <p>Peluk virtual terkirim 100x 🤗💞<br>Kita mulai lagi ya, pelan‑pelan tapi bareng.</p>
+      <button class="btn-close" id="closeModal">Oke, peluk balik! 🤍</button>
+    </div>
+  </div>
+
+  <script>
+    // Utility: acak rentang
+    const rand = (min, max) => Math.random() * (max - min) + min;
+
+    // Hati melayang terus menerus
+    function spawnHeartLoop() {
+      const frame = document.body;
+      setInterval(() => {
+        const h = document.createElement('div');
+        h.className = 'heart';
+        h.textContent = Math.random() > 0.5 ? '💖' : (Math.random() > .5 ? '💗' : '💞');
+        const size = rand(12, 26);
+        h.style.left = rand(0, window.innerWidth - size) + 'px';
+        h.style.bottom = '-24px';
+        h.style.fontSize = size + 'px';
+        h.style.animationDuration = rand(6, 11) + 's';
+        frame.appendChild(h);
+        setTimeout(() => h.remove(), 12000);
+      }, 480);
+    }
+
+    // Burst hati saat klik Yes
+    function burstHearts(x, y, count=24) {
+      for (let i = 0; i < count; i++) {
+        const h = document.createElement('div');
+        h.className = 'heart';
+        h.textContent = i % 2 ? '💖' : '💘';
+        const size = rand(14, 22);
+        h.style.left = (x + rand(-30, 30)) + 'px';
+        h.style.top = (y + rand(-10, 10)) + 'px';
+        h.style.fontSize = size + 'px';
+        h.style.animationDuration = rand(1.6, 2.3) + 's';
+        h.style.transform = 'translateY(0) scale(1)';
+        document.body.appendChild(h);
+        setTimeout(() => h.remove(), 2600);
+      }
+    }
+
+    // Tombol "Nanti dulu…" lincah
+    function makeNoButtonRun() {
+      const noBtn = document.getElementById('noBtn');
+      const phone = document.querySelector('.phone-frame');
+      let dodge = 0;
+
+      function moveAway() {
+        const rect = noBtn.getBoundingClientRect();
+        const maxX = phone.clientWidth - rect.width - 10;
+        const maxY = phone.clientHeight - rect.height - 10;
+        const x = rand(0, maxX);
+        const y = rand(phone.clientHeight * 0.2, maxY);
+        noBtn.style.position = 'absolute';
+        noBtn.style.left = x + 'px';
+        noBtn.style.top = y + 'px';
+        dodge++;
+        if (dodge > 4) {
+          noBtn.textContent = 'Yakin nggak maafin? 😢';
+        }
+      }
+
+      noBtn.addEventListener('pointerenter', moveAway);
+      noBtn.addEventListener('click', moveAway);
+    }
+
+    // Modal logic
+    function modalLogic() {
+      const modal = document.getElementById('modal');
+      const yes = document.getElementById('yesBtn');
+      const close = document.getElementById('closeModal');
+
+      yes.addEventListener('click', (e) => {
+        burstHearts(e.clientX, e.clientY);
+        modal.classList.add('active');
+      });
+      close.addEventListener('click', () => modal.classList.remove('active'));
+      modal.addEventListener('click', (ev) => {
+        if (ev.target === modal) modal.classList.remove('active');
+      });
+    }
+
+    // Sentuhan kecil: getar ringan di iPhone saat Yes
+    function enableHaptics() {
+      const yes = document.getElementById('yesBtn');
+      yes.addEventListener('click', () => {
+        if (window.navigator && navigator.vibrate) {
+          navigator.vibrate(20);
+        }
+      });
+    }
+
+    // Init
+    spawnHeartLoop();
+    makeNoButtonRun();
+    modalLogic();
+    enableHaptics();
+
+    // A little accessibility
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.getElementById('modal').classList.remove('active');
+      }
+    });
+  </script>
+</body>
+</html>
